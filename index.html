@@ -9,9 +9,6 @@
     <meta name="theme-color" content="#0066cc">
     <title>AI Гонки - Нейросети обучаются гонкам</title>
     
-    <!-- Telegram Web App API -->
-    <script src="https://telegram.org/js/telegram-web-app.js"></script>
-    
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -142,80 +139,8 @@
     <script src="js/main.js"></script>
     
     <script>
-        /**
-         * Telegram Mini App Integration & Mobile Enhancements
-         */
         (function() {
-            // Инициализация Telegram WebApp
-            const tg = window.Telegram?.WebApp;
-            
-            if (tg) {
-                console.log('🤖 Telegram WebApp инициализирован');
-                
-                // Расширяем на весь экран
-                tg.expand();
-                
-                // Настройка Main Button
-                tg.MainButton.setText('🔄 Новая гонка');
-                tg.MainButton.show();
-                tg.MainButton.onClick(() => {
-                    if (window.game) {
-                        window.game.reset();
-                        tg.HapticFeedback.impactOccurred('medium');
-                    }
-                });
-                
-                // Настройка Back Button
-                tg.BackButton.show();
-                tg.BackButton.onClick(() => {
-                    tg.close();
-                });
-                
-                // Haptic feedback для кнопок
-                document.querySelectorAll('button').forEach(btn => {
-                    btn.addEventListener('click', () => {
-                        tg.HapticFeedback.impactOccurred('light');
-                    });
-                });
-                
-                // Сохраняем ссылку на tg глобально
-                window.tg = tg;
-            } else {
-                console.log('🌐 Запущен в браузере (не Telegram)');
-            }
-            
-            // Предотвращаем zoom на iOS при двойном тапе
-            let lastTouchEnd = 0;
-            document.addEventListener('touchend', (e) => {
-                const now = Date.now();
-                if (now - lastTouchEnd <= 300) {
-                    e.preventDefault();
-                }
-                lastTouchEnd = now;
-            }, false);
-            
-            // Предотвращаем pull-to-refresh на мобильных
-            document.body.addEventListener('touchmove', (e) => {
-                if (e.target.closest('.info-panel')) return; // Разрешаем скролл в info-panel
-                // e.preventDefault(); // Раскомментировать если нужно полностью запретить
-            }, { passive: true });
-            
-            // Оптимизация canvas для Retina дисплеев
-            function setupHiDPI(canvas, ctx) {
-                const dpr = window.devicePixelRatio || 1;
-                const rect = canvas.getBoundingClientRect();
-                
-                canvas.width = rect.width * dpr;
-                canvas.height = rect.height * dpr;
-                
-                ctx.scale(dpr, dpr);
-                
-                canvas.style.width = rect.width + 'px';
-                canvas.style.height = rect.height + 'px';
-            }
-            
-            // Экспортируем функцию для использования в main.js
-            window.setupHiDPI = setupHiDPI;
+            console.log('AI Gonki - Local Mode');
         })();
     </script>
 </body>
