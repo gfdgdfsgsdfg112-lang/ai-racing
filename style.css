@@ -1,0 +1,537 @@
+/* Минималистичный стиль с мобильной адаптацией */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
+}
+
+html {
+    font-size: 16px;
+    -webkit-text-size-adjust: 100%;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: #fafafa;
+    min-height: 100vh;
+    color: #333;
+    overflow-x: hidden;
+    touch-action: pan-y;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+header {
+    text-align: center;
+    padding: 15px 0;
+    border-bottom: 1px solid #eee;
+    margin-bottom: 20px;
+}
+
+h1 {
+    font-size: 1.8em;
+    color: #333;
+}
+
+.subtitle {
+    color: #666;
+    font-size: 0.9em;
+    margin-top: 5px;
+}
+
+.main-content {
+    display: grid;
+    grid-template-columns: 1fr 300px;
+    gap: 20px;
+}
+
+.game-area {
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    overflow: hidden;
+    position: relative;
+    touch-action: none;
+}
+
+#gameCanvas {
+    display: block;
+    width: 100%;
+    height: 450px;
+}
+
+.stats-overlay {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background: rgba(255, 255, 255, 0.95);
+    padding: 12px;
+    border-radius: 6px;
+    font-size: 12px;
+    border: 1px solid #eee;
+    z-index: 10;
+}
+
+.stats-overlay div {
+    margin: 4px 0;
+}
+
+.stats-overlay span {
+    color: #0066cc;
+    font-weight: 600;
+}
+
+.sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.panel {
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 15px;
+}
+
+.panel h3 {
+    color: #333;
+    margin-bottom: 12px;
+    font-size: 0.95em;
+    font-weight: 600;
+}
+
+.controls {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+button {
+    background: #0066cc;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 6px;
+    color: #fff;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.1s;
+    font-size: 14px;
+    min-height: 44px;
+    touch-action: manipulation;
+    flex: 1;
+}
+
+button:active {
+    background: #0052a3;
+    transform: scale(0.98);
+}
+
+.btn-row {
+    display: flex;
+    gap: 8px;
+}
+
+.btn-row button {
+    flex: 1;
+}
+
+.slider-group {
+    margin: 8px 0;
+}
+
+.slider-group label {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 4px;
+    font-size: 12px;
+    color: #666;
+}
+
+input[type="range"] {
+    width: 100%;
+    height: 6px;
+    border-radius: 3px;
+    background: #eee;
+    outline: none;
+    -webkit-appearance: none;
+    touch-action: manipulation;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: #0066cc;
+    cursor: pointer;
+}
+
+input[type="range"]::-moz-range-thumb {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: #0066cc;
+    cursor: pointer;
+    border: none;
+}
+
+select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 14px;
+    background: #fff;
+    min-height: 44px;
+    cursor: pointer;
+}
+
+.track-info {
+    background: #f5f5f5;
+    border-radius: 6px;
+    padding: 10px;
+    margin-top: 8px;
+    font-size: 12px;
+}
+
+.track-info p {
+    margin: 3px 0;
+    color: #666;
+}
+
+.track-info strong {
+    color: #333;
+}
+
+.network-panel {
+    background: #fff;
+}
+
+#networkCanvas {
+    width: 100%;
+    height: 120px;
+    border-radius: 6px;
+    background: #fafafa;
+    border: 1px solid #eee;
+}
+
+.chart-panel {
+    background: #fff;
+}
+
+#chartCanvas {
+    width: 100%;
+    height: 80px;
+    border-radius: 6px;
+    background: #fafafa;
+    border: 1px solid #eee;
+}
+
+.info-panel {
+    font-size: 11px;
+    color: #666;
+    line-height: 1.5;
+    max-height: 250px;
+    overflow-y: auto;
+}
+
+.info-panel p {
+    margin: 4px 0;
+}
+
+.method-info strong {
+    color: #333;
+}
+
+/* Планшеты */
+@media (max-width: 1024px) {
+    .main-content {
+        grid-template-columns: 1fr 280px;
+        gap: 15px;
+    }
+    
+    #gameCanvas {
+        height: 400px;
+    }
+}
+
+/* Мобильные устройства */
+@media (max-width: 768px) {
+    html {
+        font-size: 14px;
+    }
+    
+    .container {
+        padding: 10px;
+    }
+    
+    header {
+        padding: 10px 0;
+        margin-bottom: 10px;
+    }
+    
+    h1 {
+        font-size: 1.4em;
+    }
+    
+    .subtitle {
+        font-size: 0.8em;
+    }
+    
+    .main-content {
+        grid-template-columns: 1fr;
+        gap: 10px;
+    }
+    
+    .game-area {
+        border-radius: 6px;
+    }
+    
+    #gameCanvas {
+        height: 280px;
+        max-height: 35vh;
+    }
+    
+    .stats-overlay {
+        font-size: 10px;
+        padding: 6px 8px;
+        top: 5px;
+        left: 5px;
+    }
+    
+    .stats-overlay div {
+        margin: 2px 0;
+    }
+    
+    .sidebar {
+        gap: 8px;
+    }
+    
+    .panel {
+        padding: 10px;
+        border-radius: 6px;
+    }
+    
+    .panel h3 {
+        font-size: 0.9em;
+        margin-bottom: 8px;
+    }
+    
+    .controls {
+        gap: 6px;
+    }
+    
+    button {
+        padding: 10px 12px;
+        font-size: 13px;
+    }
+    
+    .slider-group {
+        margin: 6px 0;
+    }
+    
+    .slider-group label {
+        font-size: 11px;
+    }
+    
+    select {
+        padding: 8px;
+        font-size: 13px;
+    }
+    
+    .track-info {
+        padding: 8px;
+        font-size: 11px;
+    }
+    
+    #networkCanvas {
+        height: 100px;
+    }
+    
+    #chartCanvas {
+        height: 60px;
+    }
+    
+    .info-panel {
+        font-size: 10px;
+        max-height: 200px;
+    }
+    
+    .info-panel h3 {
+        font-size: 0.85em;
+    }
+}
+
+/* Маленькие мобильные устройства */
+@media (max-width: 480px) {
+    .container {
+        padding: 5px;
+    }
+    
+    header {
+        padding: 8px 0;
+        margin-bottom: 8px;
+    }
+    
+    h1 {
+        font-size: 1.2em;
+    }
+    
+    .subtitle {
+        font-size: 0.75em;
+    }
+    
+    #gameCanvas {
+        height: 220px;
+        max-height: 30vh;
+    }
+    
+    .stats-overlay {
+        font-size: 9px;
+        padding: 4px 6px;
+    }
+    
+    .panel {
+        padding: 8px;
+    }
+    
+    .panel h3 {
+        font-size: 0.85em;
+        margin-bottom: 6px;
+    }
+    
+    button {
+        padding: 8px 10px;
+        font-size: 12px;
+        min-height: 40px;
+    }
+    
+    .slider-group label {
+        font-size: 10px;
+    }
+    
+    input[type="range"]::-webkit-slider-thumb {
+        width: 18px;
+        height: 18px;
+    }
+    
+    select {
+        padding: 6px;
+        font-size: 12px;
+        min-height: 40px;
+    }
+    
+    #networkCanvas {
+        height: 80px;
+    }
+    
+    #chartCanvas {
+        height: 50px;
+    }
+    
+    .info-panel {
+        font-size: 9px;
+        max-height: 150px;
+    }
+}
+
+/* Ландшафтная ориентация на мобильных */
+@media (max-width: 768px) and (orientation: landscape) {
+    .main-content {
+        grid-template-columns: 1fr 250px;
+    }
+    
+    #gameCanvas {
+        height: 200px;
+        max-height: 50vh;
+    }
+    
+    .sidebar {
+        max-height: calc(100vh - 100px);
+        overflow-y: auto;
+    }
+}
+
+/* Высокие экраны (телефоны в портретной ориентации) */
+@media (max-height: 700px) and (max-width: 480px) {
+    #gameCanvas {
+        height: 180px;
+        max-height: 25vh;
+    }
+    
+    .panel {
+        padding: 6px;
+    }
+    
+    .sidebar {
+        gap: 6px;
+    }
+}
+
+/* Touch устройства - улучшение интерактивности */
+@media (hover: none) and (pointer: coarse) {
+    button {
+        min-height: 48px;
+        font-size: 16px;
+    }
+    
+    select {
+        min-height: 48px;
+        font-size: 16px;
+    }
+    
+    input[type="range"]::-webkit-slider-thumb {
+        width: 24px;
+        height: 24px;
+    }
+    
+    .stats-overlay {
+        pointer-events: none;
+    }
+}
+
+/* Безопасные зоны для устройств с вырезами */
+@supports (padding: env(safe-area-inset-top)) {
+    body {
+        padding-top: env(safe-area-inset-top);
+        padding-bottom: env(safe-area-inset-bottom);
+        padding-left: env(safe-area-inset-left);
+        padding-right: env(safe-area-inset-right);
+    }
+}
+
+/* Анимация для финиша */
+@keyframes finish-pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.7; }
+}
+
+.finish-banner {
+    animation: finish-pulse 1s ease-in-out infinite;
+}
+
+/* Скроллбар для info-panel */
+.info-panel::-webkit-scrollbar {
+    width: 4px;
+}
+
+.info-panel::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 2px;
+}
+
+.info-panel::-webkit-scrollbar-thumb {
+    background: #ccc;
+    border-radius: 2px;
+}
+
+.info-panel::-webkit-scrollbar-thumb:hover {
+    background: #999;
+}

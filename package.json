@@ -1,0 +1,43 @@
+{
+  "name": "ai-racing-telegram",
+  "version": "1.0.0",
+  "description": "AI Гонки - Telegram Mini App с нейросетями",
+  "main": "server.js",
+  "bin": "exe-entry.js",
+  "scripts": {
+    "start": "node run.js",
+    "dev": "node run.js",
+    "server": "node server.js",
+    "tunnel": "node run.js",
+    "ssl": "node generate-cert.js",
+    "https": "node setup-ssl.js",
+    "build-exe": "pkg . --target node18-win-x64 --output AI-Racing.exe && echo BUILD OK",
+    "build-exe-all": "pkg . --target node18-win-x64,node18-win-x86 --output dist/AI-Racing.exe && echo BUILD OK"
+  },
+  "pkg": {
+    "assets": [
+      "index.html",
+      "style.css",
+      "js/**/*",
+      ".env"
+    ],
+    "outputPath": "dist"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "node-telegram-bot-api": "^0.64.0"
+  },
+  "devDependencies": {
+    "localtunnel": "^2.0.2",
+    "pkg": "^5.8.1"
+  },
+  "keywords": [
+    "telegram",
+    "mini-app",
+    "ai",
+    "racing",
+    "neural-network"
+  ],
+  "author": "QWEN-DCM",
+  "license": "MIT"
+}

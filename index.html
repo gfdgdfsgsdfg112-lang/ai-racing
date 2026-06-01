@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="theme-color" content="#0066cc">
+    <title>AI Гонки - Нейросети обучаются гонкам</title>
+    
+    <!-- Telegram Web App API -->
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🏎️ AI Гонки</h1>
+            <p class="subtitle">Нейросети учатся проходить 1 круг без столкновений</p>
+        </header>
+        
+        <div class="main-content">
+            <div class="game-area">
+                <canvas id="gameCanvas"></canvas>
+                <div class="stats-overlay">
+                    <div>Поколение: <span id="generation">1</span></div>
+                    <div>Лучший: <span id="bestFitness">0</span></div>
+                    <div>Средний: <span id="avgFitness">0</span></div>
+                    <div>Живых: <span id="aliveCount">50</span></div>
+                    <div>Финиш: <span id="finishedCount">0</span></div>
+                </div>
+            </div>
+            
+            <div class="sidebar">
+                <div class="panel">
+                    <h3>⚙️ Управление</h3>
+                    <div class="controls">
+                        <div class="btn-row">
+                            <button id="startBtn">⏸ Пауза</button>
+                            <button id="resetBtn">🔄 Сброс</button>
+                        </div>
+                        
+                        <div class="slider-group">
+                            <label>
+                                <span>Скорость</span>
+                                <span id="speedValue">1x</span>
+                            </label>
+                            <input type="range" id="speedSlider" min="1" max="10" value="1">
+                        </div>
+                        
+                        <div class="slider-group">
+                            <label>
+                                <span>Популяция</span>
+                                <span id="populationValue">50</span>
+                            </label>
+                            <input type="range" id="populationSlider" min="10" max="100" value="50">
+                        </div>
+                        
+                        <div class="slider-group">
+                            <label>
+                                <span>Мутация</span>
+                                <span id="mutationValue">15%</span>
+                            </label>
+                            <input type="range" id="mutationSlider" min="5" max="50" value="15">
+                        </div>
+                        
+                        <div class="slider-group">
+                            <label>
+                                <span>Метод обучения</span>
+                            </label>
+                            <select id="methodSelect">
+                                <option value="adaptive">Адаптивная мутация</option>
+                                <option value="speciation">Видообразование</option>
+                                <option value="cmaes">CMA-ES</option>
+                                <option value="standard">Стандартный ГА</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="panel">
+                    <h3>🗺️ Трасса</h3>
+                    <div class="controls">
+                        <div class="slider-group">
+                            <label>
+                                <span>Шаблон трассы</span>
+                            </label>
+                            <select id="trackSelect">
+                                <option value="oval">Овал (легко)</option>
+                                <option value="circuit">Кольцо (средне)</option>
+                                <option value="zigzag">Зигзаг (средне)</option>
+                                <option value="figure8">Восьмёрка (средне)</option>
+                                <option value="complex" selected>Сложная (сложно)</option>
+                            </select>
+                        </div>
+                        <div id="trackInfo" class="track-info">
+                            <p><strong>Сложная</strong></p>
+                            <p>Множество поворотов</p>
+                            <p>Сложность: ⭐⭐⭐</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="panel network-panel">
+                    <h3>🧠 Нейросеть лучшего</h3>
+                    <canvas id="networkCanvas"></canvas>
+                </div>
+                
+                <div class="panel chart-panel">
+                    <h3>📊 Прогресс обучения</h3>
+                    <canvas id="chartCanvas"></canvas>
+                </div>
+                
+                <div class="panel info-panel">
+                    <h3>🎯 Задача</h3>
+                    <div class="method-info">
+                        <p><strong>Пройти 1 полный круг</strong> по трассе, не врезаясь в стены.</p>
+                        <p>Финиш засчитывается только после прохождения 75% дистанции круга.</p>
+                    </div>
+                    
+                    <h3 style="margin-top: 10px">🏆 Система оценки</h3>
+                    <div class="method-info">
+                        <p>• +2 очка за каждый кадр жизни</p>
+                        <p>• +0.5 за единицу расстояния</p>
+                        <p>• +50 × средняя скорость</p>
+                        <p>• <strong>+30000 за финиш (1 круг)</strong></p>
+                        <p>• +25 × (макс.время - время финиша)</p>
+                        <p>• Штраф за низкую скорость</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Базовые модули -->
+    <script src="js/neural-network.js"></script>
+    <script src="js/car.js"></script>
+    <script src="js/track.js"></script>
+    <script src="js/genetic.js"></script>
+    <script src="js/main.js"></script>
+    
+    <script>
+        /**
+         * Telegram Mini App Integration & Mobile Enhancements
+         */
+        (function() {
+            // Инициализация Telegram WebApp
+            const tg = window.Telegram?.WebApp;
+            
+            if (tg) {
+                console.log('🤖 Telegram WebApp инициализирован');
+                
+                // Расширяем на весь экран
+                tg.expand();
+                
+                // Настройка Main Button
+                tg.MainButton.setText('🔄 Новая гонка');
+                tg.MainButton.show();
+                tg.MainButton.onClick(() => {
+                    if (window.game) {
+                        window.game.reset();
+                        tg.HapticFeedback.impactOccurred('medium');
+                    }
+                });
+                
+                // Настройка Back Button
+                tg.BackButton.show();
+                tg.BackButton.onClick(() => {
+                    tg.close();
+                });
+                
+                // Haptic feedback для кнопок
+                document.querySelectorAll('button').forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        tg.HapticFeedback.impactOccurred('light');
+                    });
+                });
+                
+                // Сохраняем ссылку на tg глобально
+                window.tg = tg;
+            } else {
+                console.log('🌐 Запущен в браузере (не Telegram)');
+            }
+            
+            // Предотвращаем zoom на iOS при двойном тапе
+            let lastTouchEnd = 0;
+            document.addEventListener('touchend', (e) => {
+                const now = Date.now();
+                if (now - lastTouchEnd <= 300) {
+                    e.preventDefault();
+                }
+                lastTouchEnd = now;
+            }, false);
+            
+            // Предотвращаем pull-to-refresh на мобильных
+            document.body.addEventListener('touchmove', (e) => {
+                if (e.target.closest('.info-panel')) return; // Разрешаем скролл в info-panel
+                // e.preventDefault(); // Раскомментировать если нужно полностью запретить
+            }, { passive: true });
+            
+            // Оптимизация canvas для Retina дисплеев
+            function setupHiDPI(canvas, ctx) {
+                const dpr = window.devicePixelRatio || 1;
+                const rect = canvas.getBoundingClientRect();
+                
+                canvas.width = rect.width * dpr;
+                canvas.height = rect.height * dpr;
+                
+                ctx.scale(dpr, dpr);
+                
+                canvas.style.width = rect.width + 'px';
+                canvas.style.height = rect.height + 'px';
+            }
+            
+            // Экспортируем функцию для использования в main.js
+            window.setupHiDPI = setupHiDPI;
+        })();
+    </script>
+</body>
+</html>
